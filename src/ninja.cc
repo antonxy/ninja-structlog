@@ -20,6 +20,7 @@
 
 #include <algorithm>
 #include <cstdlib>
+#include "structured_log.h"
 
 #ifdef _WIN32
 #include "getopt.h"
@@ -1164,6 +1165,7 @@ bool DebugEnable(const string& name) {
 "  explain      explain what caused a command to execute\n"
 "  keepdepfile  don't delete depfiles after they're read by ninja\n"
 "  keeprsp      don't delete @response files on success\n"
+"  structlog    structured json log output\n"
 #ifdef _WIN32
 "  nostatcache  don't batch stat() calls per directory and cache them\n"
 #endif
@@ -1180,6 +1182,9 @@ bool DebugEnable(const string& name) {
     return true;
   } else if (name == "keeprsp") {
     g_keep_rsp = true;
+    return true;
+  } else if (name == "structlog") {
+    g_structlog = true;
     return true;
   } else if (name == "nostatcache") {
     g_experimental_statcache = false;
@@ -1523,7 +1528,12 @@ NORETURN void real_main(int argc, char** argv) {
   if (exit_code >= 0)
     exit(exit_code);
 
-  Status* status = new StatusPrinter(config);
+  Status* status;
+  if (g_structlog) {
+    status = new StructuredStatusPrinter(config);
+  } else {
+    status = new StatusPrinter(config);
+  }
 
   if (options.working_dir) {
     // The formatting of this string, complete with funny quotes, is

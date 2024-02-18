@@ -28,6 +28,8 @@ extern bool g_keep_depfile;
 
 extern bool g_keep_rsp;
 
+extern bool g_structlog;
+
 extern bool g_experimental_statcache;
 
 #endif // NINJA_EXPLAIN_H_

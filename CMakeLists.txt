@@ -141,6 +141,7 @@ add_library(libninja OBJECT
 	src/parser.cc
 	src/state.cc
 	src/status.cc
+	src/structured_log.cc
 	src/string_piece_util.cc
 	src/util.cc
 	src/version.cc
