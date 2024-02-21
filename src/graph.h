@@ -244,11 +244,11 @@ struct Edge {
   // #2 and #3 when we need to access the various subsets.
   int implicit_deps_;
   int order_only_deps_;
-  bool is_implicit(size_t index) {
+  bool is_implicit(size_t index) const {
     return index >= inputs_.size() - order_only_deps_ - implicit_deps_ &&
         !is_order_only(index);
   }
-  bool is_order_only(size_t index) {
+  bool is_order_only(size_t index) const {
     return index >= inputs_.size() - order_only_deps_;
   }
 
